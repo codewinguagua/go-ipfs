@@ -55,6 +55,11 @@ func PrefixForCidVersion(version int) (cid.Prefix, error) {
 
 func (n *ProtoNode) SetPrefix(prefix cid.Prefix) {
 	n.Prefix = prefix
+	// Note: The codec should not be set when the prefix is the
+	// go-initialized default value
+	if prefix.MhType != 0 {
+		n.Prefix.Codec = cid.DagProtobuf
+	}
 	n.encoded = nil
 	n.cached = nil
 }
