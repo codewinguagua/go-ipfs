@@ -110,10 +110,10 @@ type Adder struct {
 	mr         *mfs.Root
 	unlocker   bs.Unlocker
 	tempRoot   *cid.Cid
-	prefix     cid.Prefix
+	prefix     *cid.Prefix
 }
 
-func (adder *Adder) SetPrefix(prefix cid.Prefix) {
+func (adder *Adder) SetPrefix(prefix *cid.Prefix) {
 	adder.mr.SetPrefix(prefix)
 	adder.prefix = prefix
 }

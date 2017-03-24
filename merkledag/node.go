@@ -53,15 +53,17 @@ func PrefixForCidVersion(version int) (cid.Prefix, error) {
 	}
 }
 
-func (n *ProtoNode) SetPrefix(prefix cid.Prefix) {
-	n.Prefix = prefix
-	// Note: The codec should not be set when the prefix is the
-	// go-initialized default value
-	if prefix.MhType != 0 {
+// SetPrefix sets the prefix if it is non nil, if prefix is nil then
+// it resets it the default value
+func (n *ProtoNode) SetPrefix(prefix *cid.Prefix) {
+	if prefix == nil {
+		n.Prefix = v0CidPrefix
+	} else {
+		n.Prefix = *prefix
 		n.Prefix.Codec = cid.DagProtobuf
+		n.encoded = nil
+		n.cached = nil
 	}
-	n.encoded = nil
-	n.cached = nil
 }
 
 type LinkSlice []*node.Link
@@ -292,7 +294,7 @@ func (n *ProtoNode) Cid() *cid.Cid {
 	}
 
 	if n.Prefix.Codec == 0 {
-		n.Prefix = v0CidPrefix
+		n.SetPrefix(nil)
 	}
 
 	c, err := n.Prefix.Sum(n.RawData())

@@ -51,7 +51,7 @@ func NewDirectory(ctx context.Context, name string, node *dag.ProtoNode, parent 
 	}
 }
 
-func (d *Directory) SetPrefix(prefix cid.Prefix) {
+func (d *Directory) SetPrefix(prefix *cid.Prefix) {
 	d.node.SetPrefix(prefix)
 }
 
